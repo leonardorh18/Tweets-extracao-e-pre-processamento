@@ -33,7 +33,7 @@ def pre_process():
     for file in csv_files:
         df = pd.read_csv(file)
         texts = df.text.to_list()
-        texts = preProc.execute(texts)
+        texts = preProc.execute(texts, min_len= 3)
         df['preproc'] = texts 
         file_name = file.split('\\')[-1]
         df.to_csv(f'datalake/pre_proc/{file_name}')
