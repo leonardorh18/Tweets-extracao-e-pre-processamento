@@ -20,11 +20,12 @@ def extracting_tweets():
     twitterExtractor = TwitterExtraction(twitterScraper)
     #exemplo de query
     #https://developer.twitter.com/en/docs/twitter-api/tweets/search/integrate/build-a-query
-    query = "python lang:pt since:2022-06-01 until:2022-06-02"
+    #query = "python lang:pt since:2022-06-01 until:2022-06-02"
+    query = "eleições lang:pt since:2018-12-01 until:2018-12-30"
     out_path = 'datalake/raw_tweets'
-    user = "uffsonline"
-    twitterExtractor.collectFromQuery(query, out_path, file_name='tweets_sobre_python', limit = 0)
-    twitterExtractor.collectFromUser(user, out_path, limit = 0) 
+    #user = "uffsonline"
+    twitterExtractor.collectFromQuery(query, out_path, file_name='tweets_sobre_eleicoes', limit = 10000, verbose=True)
+    #twitterExtractor.collectFromUser(user, out_path, limit = 0) 
     
 def pre_process():
     preProc = PreProcess(nlp)

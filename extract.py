@@ -13,25 +13,30 @@ class TwitterExtraction():
                         query, 
                         out_path, 
                         file_name = str(datetime.now().timestamp()).replace('.', ''), 
-                        limit = 0):
+                        limit = 0,
+                        verbose = False):
         
         self.__check_path(out_path)
         tweets = self.twitterScraper.TwitterSearchScraper(query)
         tweets_list_content = []
         
         for qnt, tweet in enumerate(tweets.get_items()):
+            if verbose:
+                print(f"{qnt} - {tweet.content}")
             if qnt >= limit and limit != 0:
                 break
             tweets_list_content.append([tweet.id, tweet.date, tweet.content, tweet.user.username])
-            
+        
         tweets_df = pd.DataFrame(tweets_list_content, columns = ['tweet_id', 'date', 'text', 'user'])
         tweets_df.to_csv(out_path + "/" + file_name + '.csv')
+        print("successful!")
         
             
     def collectFromUser(self,
                         user, 
                         out_path, 
-                        limit = 0):
+                        limit = 0,
+                        verbose = False):
         file_name = f'tweets_{user}'
         self.__check_path(out_path)
         tweets = self.twitterScraper.TwitterUserScraper(user)
