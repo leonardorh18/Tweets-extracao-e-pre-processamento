@@ -1,8 +1,10 @@
-# extracting-tweets
+# Extraindo e pré-processanto tweets
 
 Código para extrair e pré processar tweets a partir de uma string de busca ou extrair os tweets de um usuário específico. 
 
 Ao chamar o metodo execute(), é possível passar uma lista adicional de stopswords (aditional_stops=) e o número minimo de caracteres que uma palavra precisa ter (min_len=)
+
+#### Dependendo do idioma que você vai fazer o pré-processamento, vai precisar baixar um pacote diferente da lib do spacy pra passar como parâmetro ao instanciar a classe PreProcess. Consulte a documentação do SpaCy. (tem alguns comentários em código)
 
 # Análise dos tweets
 
