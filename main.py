@@ -10,10 +10,13 @@ import glob
 import time
 
 ####################################################
-# EXECUTE THIS LINE IF YOU DONT HAVE THE "pt_core_news_lg" package
+# EXECUTE THIS LINE IF YOU DONT HAVE THE package
 ####################################################
-#spacy.cli.download("pt_core_news_lg")
-nlp = spacy.load('pt_core_news_lg')
+#spacy.cli.download("en_core_web_lg")
+#spacy.cli.download('pt_core_news_lg')
+
+#nlp = spacy.load('pt_core_news_lg') # Package to preprocess in portuguese if you want
+nlp = spacy.load('en_core_web_lg')
 
 
 def extracting_tweets():
@@ -21,10 +24,12 @@ def extracting_tweets():
     #exemplo de query
     #https://developer.twitter.com/en/docs/twitter-api/tweets/search/integrate/build-a-query
     #query = "python lang:pt since:2022-06-01 until:2022-06-02"
-    query = "eleições lang:pt since:2018-12-01 until:2018-12-30"
+    #query = "eleições lang:pt since:2018-12-01 until:2018-12-30"
+    query = "china lang:en"
     out_path = 'datalake/raw_tweets'
+    
+    twitterExtractor.collectFromQuery(query, out_path, file_name='tweets_sobre_china', limit = 20000, verbose=True)
     #user = "uffsonline"
-    twitterExtractor.collectFromQuery(query, out_path, file_name='tweets_sobre_eleicoes', limit = 10000, verbose=True)
     #twitterExtractor.collectFromUser(user, out_path, limit = 0) 
     
 def pre_process():
@@ -34,14 +39,14 @@ def pre_process():
     for file in csv_files:
         df = pd.read_csv(file)
         texts = df.text.to_list()
-        texts = preProc.execute(texts, min_len= 3)
+        texts = preProc.execute(texts, min_len= 3, remove_link=True)
         df['preproc'] = texts 
         file_name = file.split('\\')[-1]
         df.to_csv(f'datalake/pre_proc/{file_name}')
 
 if __name__ == '__main__':
     print("Extraindo tweets")
-    extracting_tweets()
+    #extracting_tweets()
     time.sleep(10)
     print("Pre processando tweets")
     pre_process()

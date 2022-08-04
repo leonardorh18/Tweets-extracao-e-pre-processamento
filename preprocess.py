@@ -6,14 +6,14 @@ class PreProcess():
         self.__nlp = nlp
         
     def __clean(self, doc):
+        if self.remove_link:
+            doc = " ".join(word for word in doc.split() if "http" not in word and "www" not in word)
+                
         return " ".join(word for word in gensim.utils.simple_preprocess(doc, min_len = self.min_len))
         
     def __remove_stops(self, doc):
-        
-        if self.keep_digit:
-            new_doc  = " ".join(token.text for token in self.__nlp(doc) if not token.is_stop and token.text not in self.stops )
-        else:
-            new_doc  = " ".join(token.text for token in self.__nlp(doc) if not token.is_stop and not token.is_digit and token.text not in self.stops  )          
+       
+        new_doc  = " ".join(token.text for token in self.__nlp(doc) if not token.is_stop and not token.is_digit and token.text not in self.stops  )          
         return new_doc
     
     def __lemmatization(self, doc):
@@ -26,11 +26,11 @@ class PreProcess():
             new_docs.append(self.__lemmatization(self.__remove_stops(self.__clean(doc))))
         return new_docs
 
-    def execute(self, docs: list, keep_digit = False, aditional_stops = [], min_len = 0):
+    def execute(self, docs: list, aditional_stops = [], min_len = 0, remove_link = True):
         self.__docs = docs 
+        self.remove_link = remove_link
         self.min_len = min_len
         self.stops = aditional_stops
-        self.keep_digit = keep_digit
         return self.__process()
         
     
